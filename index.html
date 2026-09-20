@@ -9,91 +9,131 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Big+Shoulders+Display:wght@700;800;900&family=Noto+Kufi+Arabic:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --color-ink: #000000;
-            --color-bone: #F2EFE9;
-            --color-sand: #E7E2D8;
-            --color-deepgreen: #14532D;
-            --color-sun: #B8801A;
-            --color-clay: #8C2A1E;
-            --color-stone: #6E6A61;
-            --color-rule: #CFC8BB;
-        }
-        
-        body {
-            background-color: var(--color-bone);
-            color: var(--color-ink);
-            font-family: 'Archivo', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+<style>
+    /* ----------------------------------------
+       AMEN — GLOBAL VARIABLES
+    ---------------------------------------- */
+    :root {
+        --color-ink: #000000;
+        --color-bone: #F2EFE9;
+        --color-sand: #E7E2D8;
+        --color-deepgreen: #14532D;
+        --color-sun: #B8801A;
+        --color-clay: #8C2A1E;
+        --color-stone: #6E6A61;
+        --color-rule: #CFC8BB;
+    }
 
-        h1, h2, h3, .font-display {
-            font-family: 'Big Shoulders Display', sans-serif;
-            text-transform: uppercase;
-        }
+    /* ----------------------------------------
+       BASE TYPOGRAPHY & BODY
+    ---------------------------------------- */
+    body {
+        background-color: var(--color-bone);
+        color: var(--color-ink);
+        font-family: 'Archivo', sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
 
-        .arabic {
-            font-family: 'Noto Kufi Arabic', sans-serif;
-        }
+    h1, h2, h3, .font-display {
+        font-family: 'Big Shoulders Display', sans-serif;
+        text-transform: uppercase;
+    }
 
-        /* Hero Animation */
-        .hero-word {
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            vertical-align: bottom;
+    .arabic {
+        font-family: 'Noto Kufi Arabic', sans-serif;
+    }
+
+    /* ----------------------------------------
+       HERO WORD REVEAL ANIMATION
+    ---------------------------------------- */
+
+    /* Each letter (A, M, E, N) */
+    .hero-letter {
+        display: inline-block;
+        opacity: 1;
+    }
+
+    /* Each word segment (ll, isguidance, nds, ow) */
+    .hero-word {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        vertical-align: bottom;
+
+        /* Start hidden */
+        max-width: 0;
+        opacity: 0;
+
+        /* Animation */
+        animation: revealWord 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Staggered delays */
+    .word-delay-1 { animation-delay: 0.1s; }
+    .word-delay-2 { animation-delay: 0.2s; }
+    .word-delay-3 { animation-delay: 0.3s; }
+    .word-delay-4 { animation-delay: 0.4s; }
+
+    /* Reveal animation */
+    @keyframes revealWord {
+        0% {
             max-width: 0;
             opacity: 0;
-            animation: revealWord 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            padding-right: 0;
         }
-
-        .hero-letter {
-            display: inline-block;
-        }
-
-        .word-delay-1 { animation-delay: 0.1s; }
-        .word-delay-2 { animation-delay: 0.2s; }
-        .word-delay-3 { animation-delay: 0.3s; }
-        .word-delay-4 { animation-delay: 0.4s; }
-
-        @keyframes revealWord {
-            0% { max-width: 0; opacity: 0; padding-right: 0;}
-            100% { max-width: 300px; opacity: 1; padding-right: 0.25em;}
-        }
-
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* Focus rings */
-        *:focus-visible {
-            outline: 2.5px solid var(--color-sun);
-            outline-offset: 3px;
-        }
-
-        /* Cart Drawer */
-        #cart-drawer {
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #cart-drawer.open {
-            transform: translateX(0);
-        }
-        #cart-overlay {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        #cart-overlay.open {
+        100% {
+            max-width: 300px;
             opacity: 1;
-            pointer-events: auto;
+            padding-right: 0.25em;
         }
-    </style>
+    }
+
+    /* Ensure animation runs even when view-home is toggled */
+    #view-home.block .hero-word {
+        animation-play-state: running;
+    }
+
+    /* ----------------------------------------
+       SCROLLBAR HIDING
+    ---------------------------------------- */
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* ----------------------------------------
+       FOCUS RINGS
+    ---------------------------------------- */
+    *:focus-visible {
+        outline: 2.5px solid var(--color-sun);
+        outline-offset: 3px;
+    }
+
+    /* ----------------------------------------
+       CART DRAWER
+    ---------------------------------------- */
+    #cart-drawer {
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #cart-drawer.open {
+        transform: translateX(0);
+    }
+
+    #cart-overlay {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    #cart-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+</style>
+
     <script>
         tailwind.config = {
             theme: {
