@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMEN — Saudi Streetwear | All Misguidance Ends Now</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Big+Shoulders+Display:wght@700;800;900&family=Noto+Kufi+Arabic:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --color-ink: #000000;
+            --color-bone: #F2EFE9;
+            --color-sand: #E7E2D8;
+            --color-deepgreen: #14532D;
+            --color-sun: #B8801A;
+            --color-clay: #8C2A1E;
+            --color-stone: #6E6A61;
+            --color-rule: #CFC8BB;
+        }
+        
+        body {
+            background-color: var(--color-bone);
+            color: var(--color-ink);
+            font-family: 'Archivo', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Big Shoulders Display', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .arabic {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+        }
+
+        /* Hero Animation */
+        .hero-word {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            vertical-align: bottom;
+            max-width: 0;
+            opacity: 0;
+            animation: revealWord 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero-letter {
+            display: inline-block;
+        }
+
+        .word-delay-1 { animation-delay: 0.1s; }
+        .word-delay-2 { animation-delay: 0.2s; }
+        .word-delay-3 { animation-delay: 0.3s; }
+        .word-delay-4 { animation-delay: 0.4s; }
+
+        @keyframes revealWord {
+            0% { max-width: 0; opacity: 0; padding-right: 0;}
+            100% { max-width: 300px; opacity: 1; padding-right: 0.25em;}
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Focus rings */
+        *:focus-visible {
+            outline: 2.5px solid var(--color-sun);
+            outline-offset: 3px;
+        }
+
+        /* Cart Drawer */
+        #cart-drawer {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #cart-drawer.open {
+            transform: translateX(0);
+        }
+        #cart-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #cart-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: '#000000',
+                        bone: '#F2EFE9',
+                        sand: '#E7E2D8',
+                        deepgreen: '#14532D',
+                        sun: '#B8801A',
+                        clay: '#8C2A1E',
+                        stone: '#6E6A61',
+                        rule: '#CFC8BB'
+                    },
+                    spacing: {
+                        '4': '1rem',
+                        '8': '2rem',
+                        '12': '3rem',
+                        '16': '4rem',
+                        '24': '6rem',
+                        '32': '8rem',
+                        '48': '12rem',
+                        '64': '16rem',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="w-full relative min-h-screen flex flex-col">
+
+    <div class="bg-ink text-bone text-[13px] py-2 text-center font-bold tracking-wide relative z-50">
+        <div id="announcement-text" class="transition-opacity duration-300">Free delivery on orders over SAR 300</div>
+    </div>
+
+    <nav class="sticky top-0 w-full bg-bone/90 backdrop-blur-md border-b border-rule z-40 transition-transform duration-300" id="navbar">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-11 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-6 hidden md:flex text-sm font-bold">
+                <a href="#" class="hover:text-stone transition-colors" onclick="routeTo('home')">New</a>
+                <a href="#" class="hover:text-stone transition-colors" onclick="routeTo('home')">Shop</a>
+                <a href="#" class="hover:text-stone transition-colors">Collections</a>
+                <a href="#" class="hover:text-stone transition-colors">Origin</a>
+            </div>
+            
+            <div class="md:hidden flex items-center">
+                <button class="p-2 -ml-2" aria-label="Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <a href="#" class="font-display font-black text-3xl tracking-tight leading-none absolute left-1/2 -translate-x-1/2" onclick="routeTo('home')">AMEN</a>
+
+            <div class="flex items-center gap-4 text-sm font-bold">
+                <span class="hidden md:block cursor-pointer hover:text-stone">AR</span>
+                <button aria-label="Search" class="hidden md:block hover:text-stone"><i data-lucide="search" class="w-5 h-5"></i></button>
+                <button aria-label="Wishlist" class="hidden md:block hover:text-stone"><i data-lucide="heart" class="w-5 h-5"></i></button>
+                <button aria-label="Bag" class="hover:text-stone relative" onclick="toggleCart()">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-2 bg-ink text-bone text-[10px] w-4 h-4 flex items-center justify-center rounded-full hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="app-content" class="flex-grow">
+        <!-- View: HOME -->
+        <div id="view-home" class="block">
+            
+            <section class="relative h-[80vh] md:h-[90vh] bg-ink w-full overflow-hidden flex flex-col justify-end p-5 md:p-11">
+                <!-- Background Image Placeholder (simulating campaign film) -->
+                <div class="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center"></div>
+                <!-- 55% Scrim for text contrast -->
+                <div class="absolute inset-0 z-10 bg-gradient-to-t from-ink/90 via-ink/50 to-ink/20"></div>
+
+                <div class="relative z-20 max-w-[1280px] w-full mx-auto pb-12 md:pb-24">
+                    <h1 class="font-display font-black text-[58px] md:text-[132px] leading-[0.88] md:leading-[0.82] text-bone tracking-tight mb-6">
+                        <div>
+                            <span class="hero-letter">A</span><span class="hero-word word-delay-1 lowercase">ll</span>
+                        </div>
+                        <div>
+                            <span class="hero-letter">M</span><span class="hero-word word-delay-2 lowercase">isguidance</span>
+                        </div>
+                        <div>
+                            <span class="hero-letter">E</span><span class="hero-word word-delay-3 lowercase">nds</span>
+                        </div>
+                        <div>
+                            <span class="hero-letter">N</span><span class="hero-word word-delay-4 lowercase">ow</span>
+                        </div>
+                    </h1>
+                    <div class="max-w-md text-bone/90 mb-8 text-base">
+                        Streetwear from the Kingdom, built heavy and meant to be read. The Sunrise drop is live.
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 items-start">
+                        <button class="bg-bone text-ink px-8 py-3 font-bold text-sm hover:bg-stone transition-colors w-full sm:w-auto" onclick="routeTo('pdp')">Shop the drop</button>
+                        <button class="bg-transparent border-[1.5px] border-bone text-bone px-8 py-3 font-bold text-sm hover:bg-bone hover:text-ink transition-colors w-full sm:w-auto">See the lookbook</button>
+                    </div>
+                    <div class="text-bone/70 text-[13px] mt-6 font-semibold">
+                        Limited run · Ships in 1–3 days
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 md:py-24 max-w-[1280px] mx-auto w-full px-5 md:px-11">
+                <h2 class="font-display font-bold text-[28px] md:text-[40px] mb-2 leading-none">Five ways in</h2>
+                <p class="text-stone mb-8 md:mb-12">Every piece belongs to a world. Start with the one that sounds like you.</p>
+                
+                <div class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4">
+                    <div class="min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-sand relative group cursor-pointer snap-start flex-shrink-0">
+                        <img src="https://placehold.co/600x750/E7E2D8/000000?text=Origin" class="w-full h-full object-cover mix-blend-multiply" alt="Origin Collection">
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <h3 class="font-display text-[24px] font-bold">Origin</h3>
+                            <p class="text-[13px] opacity-0 group-hover:opacity-100 transition-opacity mt-1">Graphics pulled straight from home.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-sand relative group cursor-pointer snap-start flex-shrink-0">
+                        <img src="https://placehold.co/600x750/E7E2D8/000000?text=Essentials" class="w-full h-full object-cover mix-blend-multiply" alt="Essentials Collection">
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <h3 class="font-display text-[24px] font-bold">Essentials</h3>
+                            <p class="text-[13px] opacity-0 group-hover:opacity-100 transition-opacity mt-1">The heavy basics you'll wear until they fade.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-sand relative group cursor-pointer snap-start flex-shrink-0">
+                        <img src="https://placehold.co/600x750/E7E2D8/000000?text=Sunrise" class="w-full h-full object-cover mix-blend-multiply" alt="Sunrise Collection">
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <h3 class="font-display text-[24px] font-bold">Sunrise</h3>
+                            <p class="text-[13px] opacity-0 group-hover:opacity-100 transition-opacity mt-1">Warm tones for the hour before the city wakes.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-sand relative group cursor-pointer snap-start flex-shrink-0">
+                        <img src="https://placehold.co/600x750/E7E2D8/000000?text=Statement" class="w-full h-full object-cover mix-blend-multiply" alt="Statement Collection">
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <h3 class="font-display text-[24px] font-bold">Statement</h3>
+                            <p class="text-[13px] opacity-0 group-hover:opacity-100 transition-opacity mt-1">Outerwear and sets that end the conversation.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-sand relative group cursor-pointer snap-start flex-shrink-0">
+                        <img src="https://placehold.co/600x750/E7E2D8/000000?text=Finishing" class="w-full h-full object-cover mix-blend-multiply" alt="Finishing Collection">
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <h3 class="font-display text-[24px] font-bold">Finishing</h3>
+                            <p class="text-[13px] opacity-0 group-hover:opacity-100 transition-opacity mt-1">Caps, pendants, socks. The last five percent.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 max-w-[1280px] mx-auto w-full px-5 md:px-11">
+                <div class="flex justify-between items-end mb-8 md:mb-12">
+                    <div>
+                        <h2 class="font-display font-bold text-[28px] md:text-[40px] mb-2 leading-none">What keeps selling out</h2>
+                        <p class="text-stone">Restocked once, if at all.</p>
+                    </div>
+                    <button class="text-[13px] font-bold underline decoration-1 underline-offset-4 hidden md:block hover:text-stone">See everything</button>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <!-- Product Card 1 -->
+                    <div class="group cursor-pointer" onclick="routeTo('pdp')">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Washed+Hoodie" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Essential Washed Hoodie">
+                            <!-- Quick Add Hover Desktop -->
+                            <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform hidden md:block">
+                                <button class="w-full bg-ink text-bone py-3 text-sm font-bold hover:bg-deepgreen transition-colors" onclick="event.stopPropagation(); addToCart('Essential Washed Hoodie', 'Olive Wash', 'L', 349)">Quick Add</button>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-[14px]">Essential Washed Hoodie</h3>
+                        <p class="text-stone text-[14px]">SAR 349</p>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Culture+Tee" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Saudi Culture Tee">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Saudi Culture Tee</h3>
+                        <p class="text-stone text-[14px]">SAR 189</p>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <div class="absolute top-3 left-3 bg-bone text-ink text-[11px] font-bold px-2 py-1 z-10">4 left</div>
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Barcode+Tee" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Barcode Tee">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Barcode Tee</h3>
+                        <p class="text-stone text-[14px]">SAR 179</p>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Leather+Bomber" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Leather Bomber Jacket">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Leather Bomber Jacket</h3>
+                        <p class="text-stone text-[14px]">SAR 1,290</p>
+                    </div>
+                </div>
+                <button class="w-full border-[1.5px] border-ink text-ink py-4 font-bold text-[14px] mt-8 md:hidden">See everything</button>
+            </section>
+
+            <section class="bg-ink text-bone py-24 md:py-32 px-5 md:px-11 w-full flex flex-col items-center text-center my-12">
+                <h2 class="font-display font-black text-[40px] md:text-[56px] leading-none mb-6">Art disturbs the comfortable.</h2>
+                <p class="max-w-2xl mx-auto text-base text-bone/90 mb-8 leading-[1.6]">
+                    AMEN started with four letters and a sentence: All Misguidance Ends Now. Every drop since has come from the same place — taking something from here, something people recognise, and putting it somewhere it can't be ignored.
+                </p>
+                <button class="text-[14px] font-bold underline decoration-1 underline-offset-4 hover:text-stone transition-colors">Read the origin</button>
+            </section>
+
+            <section class="py-16 max-w-[1280px] mx-auto w-full px-5 md:px-11">
+                <div class="flex justify-between items-end mb-8 md:mb-12">
+                    <div>
+                        <h2 class="font-display font-bold text-[28px] md:text-[40px] mb-2 leading-none">Almost gone</h2>
+                        <p class="text-stone">Low stock, no restock planned.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4 md:grid md:grid-cols-4 md:overflow-visible md:pb-0">
+                    <!-- Low Stock Item 1 -->
+                    <div class="group cursor-pointer min-w-[240px] md:min-w-0 snap-start flex-shrink-0" onclick="routeTo('pdp')">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <div class="absolute top-3 left-3 bg-bone text-ink text-[11px] font-bold px-2 py-1 z-10">4 left</div>
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Sunrise+Tee" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Sunrise Tee">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Sunrise Tee</h3>
+                        <p class="text-stone text-[14px]">SAR 179</p>
+                    </div>
+                    <!-- Low Stock Item 2 -->
+                    <div class="group cursor-pointer min-w-[240px] md:min-w-0 snap-start flex-shrink-0">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <div class="absolute top-3 left-3 bg-bone text-ink text-[11px] font-bold px-2 py-1 z-10">Final size: L</div>
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Cropped+LS" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Cropped Long Sleeve">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Cropped Long Sleeve</h3>
+                        <p class="text-stone text-[14px]">SAR 219</p>
+                    </div>
+                    <!-- Low Stock Item 3 -->
+                    <div class="group cursor-pointer min-w-[240px] md:min-w-0 snap-start flex-shrink-0">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <div class="absolute top-3 left-3 bg-bone text-ink text-[11px] font-bold px-2 py-1 z-10">Last one</div>
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Bucket+Hat" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Bucket Hat">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Bucket Hat</h3>
+                        <p class="text-stone text-[14px]">SAR 149</p>
+                    </div>
+                    <!-- Low Stock Item 4 -->
+                    <div class="group cursor-pointer min-w-[240px] md:min-w-0 snap-start flex-shrink-0">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <div class="absolute top-3 left-3 bg-bone text-ink text-[11px] font-bold px-2 py-1 z-10">2 left</div>
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Culture+Tee" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Saudi Culture Tee">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Saudi Culture Tee</h3>
+                        <p class="text-stone text-[14px]">SAR 189</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 max-w-[1280px] mx-auto w-full px-5 md:px-11">
+                <h2 class="font-display font-bold text-[28px] md:text-[40px] mb-2 leading-none">Worn by you</h2>
+                <p class="text-stone mb-8 md:mb-12">Tag @amenofficial.co and you might end up here.</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-4">
+                    <img src="https://placehold.co/400x400/E7E2D8/000000?text=UGC1" class="w-full aspect-square object-cover bg-sand" alt="UGC">
+                    <img src="https://placehold.co/400x400/E7E2D8/000000?text=UGC2" class="w-full aspect-square object-cover bg-sand" alt="UGC">
+                    <img src="https://placehold.co/400x400/E7E2D8/000000?text=UGC3" class="w-full aspect-square object-cover bg-sand" alt="UGC">
+                    <img src="https://placehold.co/400x400/E7E2D8/000000?text=UGC4" class="w-full aspect-square object-cover bg-sand hidden md:block" alt="UGC">
+                    <img src="https://placehold.co/400x400/E7E2D8/000000?text=UGC5" class="w-full aspect-square object-cover bg-sand hidden md:block" alt="UGC">
+                    <img src="https://placehold.co/400x400/E7E2D8/000000?text=UGC6" class="w-full aspect-square object-cover bg-sand hidden md:block" alt="UGC">
+                </div>
+            </section>
+
+            <section class="py-16 border-t border-rule max-w-[1280px] mx-auto w-full px-5 md:px-11">
+                <h2 class="font-display font-bold text-[28px] md:text-[40px] mb-2 leading-none">4.8 from 312 buyers</h2>
+                <p class="text-stone mb-8 md:mb-12">Every review below is from a confirmed order.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <div class="flex text-ink mb-2">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="font-bold text-[16px] mb-2">"Quality is insane. Heavy but doesn't make you sweat in the mall. Best local brand rn."</p>
+                        <p class="text-[13px] text-stone">Khalid · Essential Washed Hoodie · <span class="text-deepgreen">Verified purchase</span></p>
+                    </div>
+                    <div>
+                        <div class="flex text-ink mb-2">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="font-bold text-[16px] mb-2">"The barcode actually scans. Wear it everywhere. Fit is perfectly boxy."</p>
+                        <p class="text-[13px] text-stone">Faisal · Barcode Tee · <span class="text-deepgreen">Verified purchase</span></p>
+                    </div>
+                    <div>
+                        <div class="flex text-ink mb-2">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="font-bold text-[16px] mb-2">"Got it next day in Riyadh. Packaged incredibly well. The cut is exact."</p>
+                        <p class="text-[13px] text-stone">Saud · Tracksuit Set · <span class="text-deepgreen">Verified purchase</span></p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- View: PDP -->
+        <div id="view-pdp" class="hidden">
+            <!-- Breadcrumbs -->
+            <div class="max-w-[1280px] mx-auto px-5 md:px-11 py-4 text-[13px] text-stone">
+                <a href="#" onclick="routeTo('home')" class="hover:text-ink">Home</a> <span class="mx-2">/</span>
+                <a href="#" class="hover:text-ink">Outerwear</a> <span class="mx-2">/</span>
+                <span class="text-ink">Essential Washed Hoodie</span>
+            </div>
+
+            <div class="max-w-[1280px] mx-auto px-0 md:px-11 pb-24 flex flex-col md:flex-row gap-8 lg:gap-16">
+                <!-- Gallery (Mobile swipeable, Desktop grid/stack) -->
+                <div class="w-full md:w-[60%] flex-shrink-0">
+                    <div class="flex overflow-x-auto md:grid md:grid-cols-2 gap-1 md:gap-4 snap-x snap-mandatory hide-scrollbar">
+                        <img id="pdp-img-1" src="https://placehold.co/1000x1250/E7E2D8/000000?text=Front" class="w-full aspect-[4/5] object-cover bg-sand snap-start" alt="Hoodie Front">
+                        <img id="pdp-img-2" src="https://placehold.co/1000x1250/E7E2D8/000000?text=Back" class="w-full aspect-[4/5] object-cover bg-sand snap-start" alt="Hoodie Back">
+                        <img id="pdp-img-3" src="https://placehold.co/1000x1250/E7E2D8/000000?text=Detail" class="w-full aspect-[4/5] object-cover bg-sand snap-start" alt="Hoodie Detail">
+                        <img id="pdp-img-4" src="https://placehold.co/1000x1250/E7E2D8/000000?text=Lifestyle" class="w-full aspect-[4/5] object-cover bg-sand snap-start" alt="Hoodie Lifestyle">
+                    </div>
+                </div>
+
+                <!-- Product Info Sticky Sidebar -->
+                <div class="w-full md:w-[40%] px-5 md:px-0">
+                    <div class="md:sticky md:top-24">
+                        <h1 class="font-display font-bold text-[36px] md:text-[40px] leading-none mb-2">Essential Washed Hoodie</h1>
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="font-bold text-[16px]">SAR 349</span>
+                            <span class="text-[13px] text-stone">VAT included</span>
+                            <span class="text-rule">|</span>
+                            <div class="flex items-center text-[13px] gap-1 cursor-pointer hover:text-stone">
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-ink text-ink"></i> 4.9 (87 reviews)
+                            </div>
+                        </div>
+
+                        <!-- Colors -->
+                        <div class="mb-6">
+                            <p class="text-[13px] font-bold mb-3">Colour <span class="font-normal ml-2" id="selected-color-label">Olive Wash</span></p>
+                            <div class="flex gap-3">
+                                <button class="w-8 h-8 rounded-full border border-rule bg-[#d0c8b6] focus:outline focus:outline-2 focus:outline-sun focus:outline-offset-2" onclick="selectColor('Bone')"></button>
+                                <button class="w-8 h-8 rounded-full border border-rule bg-[#2a2a2a] focus:outline focus:outline-2 focus:outline-sun focus:outline-offset-2" onclick="selectColor('Faded Black')"></button>
+                                <button class="w-8 h-8 rounded-full border-2 border-ink bg-[#4a5338] focus:outline focus:outline-2 focus:outline-sun focus:outline-offset-2" onclick="selectColor('Olive Wash')"></button>
+                                <button class="w-8 h-8 rounded-full border border-rule bg-[#c2b280] focus:outline focus:outline-2 focus:outline-sun focus:outline-offset-2" onclick="selectColor('Sand')"></button>
+                            </div>
+                        </div>
+
+                        <!-- Sizes -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-end mb-3">
+                                <p class="text-[13px] font-bold">Size <span class="font-normal ml-2" id="selected-size-label">L</span></p>
+                                <button class="text-[13px] text-stone underline decoration-1 underline-offset-4 hover:text-ink">Size guide</button>
+                            </div>
+                            <div class="flex gap-2 flex-wrap">
+                                <button class="w-12 h-12 border border-rule hover:border-ink font-bold text-[14px]" onclick="selectSize('S')">S</button>
+                                <button class="w-12 h-12 border border-rule hover:border-ink font-bold text-[14px]" onclick="selectSize('M')">M</button>
+                                <button class="w-12 h-12 border-2 border-ink font-bold text-[14px]" onclick="selectSize('L')">L</button>
+                                <button class="w-12 h-12 border border-rule hover:border-ink font-bold text-[14px]" onclick="selectSize('XL')">XL</button>
+                                <button class="w-12 h-12 border border-rule text-stone line-through font-bold text-[14px]" onclick="showNotify()">XXL</button>
+                            </div>
+                        </div>
+
+                        <p class="text-[13px] font-bold text-sun mb-4">Only 6 left in Olive Wash</p>
+
+                        <!-- CTA -->
+                        <div class="flex flex-col gap-3 mb-6">
+                            <button id="add-to-bag-btn" class="w-full bg-ink text-bone py-4 font-bold text-[14px] hover:bg-deepgreen transition-colors" onclick="addToCart('Essential Washed Hoodie', 'Olive Wash', 'L', 349)">Add to bag</button>
+                            <button class="w-full border-[1.5px] border-ink text-ink py-4 font-bold text-[14px] hover:bg-ink hover:text-bone transition-colors" onclick="addToCart('Essential Washed Hoodie', 'Olive Wash', 'L', 349); toggleCart()">Buy now</button>
+                        </div>
+
+                        <!-- Trust -->
+                        <div class="bg-sand p-4 text-[13px] space-y-2 mb-8">
+                            <div class="flex items-center gap-2 font-bold"><i data-lucide="truck" class="w-4 h-4"></i> Arrives 22–24 Sep to Riyadh</div>
+                            <div class="flex items-center gap-2"><i data-lucide="package" class="w-4 h-4"></i> Free delivery over SAR 300</div>
+                            <div class="flex items-center gap-2"><i data-lucide="refresh-ccw" class="w-4 h-4"></i> 14-day returns</div>
+                            <div class="flex items-center gap-2"><i data-lucide="banknote" class="w-4 h-4"></i> Cash on delivery available</div>
+                        </div>
+
+                        <!-- Description & Accordions -->
+                        <div class="border-t border-rule py-6">
+                            <h3 class="font-bold text-[16px] mb-3">Heavy where it counts.</h3>
+                            <p class="text-stone text-[15px] mb-4 leading-relaxed">
+                                400 GSM brushed-back fleece, washed twice before it ever reaches you, so it arrives soft and slightly faded instead of stiff and shiny. Cut boxy with a dropped shoulder and a shortened body, which means it sits over a tee without swallowing you. The hood is double-layered and stands up properly. The only branding is a tonal mark at the chest — if you want a back print, that's a different piece.
+                            </p>
+                            <p class="text-stone text-[15px] mb-6 leading-relaxed">
+                                This is the one most people buy second, after a tee. It's also the one they wear most.
+                            </p>
+                            
+                            <h3 class="font-bold text-[16px] mb-3">Where this came from</h3>
+                            <p class="text-stone text-[15px] mb-8 leading-relaxed">
+                                The washed finish is the whole point. New clothes announce themselves; worn ones don't. We put every hoodie through two enzyme washes so it starts where most pieces take a year to get — which is the closest thing we have to a philosophy.
+                            </p>
+
+                            <!-- Accordions -->
+                            <div class="border-t border-rule">
+                                <button class="w-full py-4 flex justify-between items-center font-bold text-[14px] text-left hover:text-stone" onclick="toggleAccordion('acc-fit')">
+                                    Fit & sizing
+                                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                                </button>
+                                <div id="acc-fit" class="hidden pb-4 text-[14px] text-stone leading-relaxed">
+                                    Boxy, oversized through the body, shortened in length. True to size for an oversized fit. If you want it closer to the body, size down once.<br><br>
+                                    Model is 182cm and wears a size L. · Chest, length and sleeve measurements per size in the size guide.
+                                </div>
+                            </div>
+                            <div class="border-t border-rule">
+                                <button class="w-full py-4 flex justify-between items-center font-bold text-[14px] text-left hover:text-stone" onclick="toggleAccordion('acc-mat')">
+                                    Materials & care
+                                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                                </button>
+                                <div id="acc-mat" class="hidden pb-4 text-[14px] text-stone leading-relaxed">
+                                    100% cotton, 400 GSM brushed-back fleece. Double enzyme washed.<br><br>
+                                    Wash cold inside out · Don't tumble dry · Don't iron the chest mark · Wash with similar colours for the first three washes
+                                </div>
+                            </div>
+                            <div class="border-t border-b border-rule mb-8">
+                                <button class="w-full py-4 flex justify-between items-center font-bold text-[14px] text-left hover:text-stone" onclick="toggleAccordion('acc-ship')">
+                                    Shipping & returns
+                                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                                </button>
+                                <div id="acc-ship" class="hidden pb-4 text-[14px] text-stone leading-relaxed">
+                                    Free delivery over SAR 300, otherwise SAR 25. Ships within 24 hours on working days, arriving in 1–3 days to most cities and up to 5 for remote areas. Cash on delivery available Kingdom-wide.<br><br>
+                                    14 days to return anything unworn with tags attached. We arrange the pickup and cover the cost.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="max-w-[1280px] mx-auto px-5 md:px-11 pb-24">
+                <h2 class="font-display font-bold text-[28px] mb-6">Complete the look</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Tracksuit+Trouser" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Tracksuit Trouser">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Tracksuit Trouser</h3>
+                        <p class="text-stone text-[14px]">SAR 329 <span class="text-[12px] ml-2 text-deepgreen block sm:inline">Save SAR 90 as set</span></p>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Corduroy+Cap" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Corduroy Cap">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Corduroy Cap</h3>
+                        <p class="text-stone text-[14px]">SAR 129</p>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[4/5] bg-sand mb-4 relative overflow-hidden">
+                            <img src="https://placehold.co/600x750/E7E2D8/000000?text=Crew+Socks" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" alt="Crew Socks 2-pack">
+                        </div>
+                        <h3 class="font-bold text-[14px]">Crew Socks 2-pack</h3>
+                        <p class="text-stone text-[14px]">SAR 59</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+    <section class="bg-sand w-full border-t border-rule py-12 px-5 md:px-11 text-center sm:text-left">
+        <div class="max-w-[1280px] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="flex flex-col items-center sm:items-start">
+                <i data-lucide="package" class="w-6 h-6 mb-4"></i>
+                <h4 class="font-bold text-[14px] mb-1">Free over SAR 300</h4>
+                <p class="text-stone text-[13px]">Aramex or SMSA, 1–3 days to most cities.</p>
+            </div>
+            <div class="flex flex-col items-center sm:items-start">
+                <i data-lucide="refresh-ccw" class="w-6 h-6 mb-4"></i>
+                <h4 class="font-bold text-[14px] mb-1">14-day returns</h4>
+                <p class="text-stone text-[13px]">Unworn, tags on, we cover the pickup.</p>
+            </div>
+            <div class="flex flex-col items-center sm:items-start">
+                <i data-lucide="credit-card" class="w-6 h-6 mb-4"></i>
+                <h4 class="font-bold text-[14px] mb-1">Pay your way</h4>
+                <p class="text-stone text-[13px]">mada, Apple Pay, Visa, Tabby, or COD.</p>
+            </div>
+            <div class="flex flex-col items-center sm:items-start">
+                <i data-lucide="message-square" class="w-6 h-6 mb-4"></i>
+                <h4 class="font-bold text-[14px] mb-1">Real people</h4>
+                <p class="text-stone text-[13px]">WhatsApp us. Someone answers, in AR/EN.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="bg-ink text-bone py-16 md:py-24 px-5 md:px-11">
+        <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div class="max-w-md">
+                <h2 class="font-display font-bold text-[28px] md:text-[40px] mb-2 leading-none">Know before it drops</h2>
+                <p class="text-bone/80 text-[14px] leading-relaxed">Early access to every release, and a heads-up before anything sells out. No noise.</p>
+            </div>
+            <div class="w-full md:w-auto flex-grow max-w-xl">
+                <form class="flex flex-col sm:flex-row gap-4" onsubmit="event.preventDefault(); showNotifyMsg();">
+                    <input type="email" placeholder="Email address" class="bg-transparent border border-bone/30 text-bone px-4 py-3 text-[14px] w-full focus:outline-none focus:border-bone rounded-none" required>
+                    <input type="tel" placeholder="WhatsApp (optional)" class="bg-transparent border border-bone/30 text-bone px-4 py-3 text-[14px] w-full focus:outline-none focus:border-bone rounded-none">
+                    <button type="submit" class="bg-bone text-ink font-bold px-8 py-3 text-[14px] whitespace-nowrap hover:bg-stone transition-colors">Get access</button>
+                </form>
+                <p class="text-[12px] text-bone/50 mt-3" id="newsletter-msg">Two or three messages a month. Leave whenever.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-bone pt-16 pb-8 px-5 md:px-11 border-t border-rule text-[14px]">
+        <div class="max-w-[1280px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+            <div>
+                <h4 class="font-bold mb-4 uppercase text-[12px] tracking-wider text-stone">Shop</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-stone transition-colors" onclick="routeTo('home')">New arrivals</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Tops</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Outerwear</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Sets</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Headwear & Accessories</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 uppercase text-[12px] tracking-wider text-stone">Help</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-stone transition-colors">Track your order</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Shipping</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Returns</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Size & fit</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">FAQs</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 uppercase text-[12px] tracking-wider text-stone">Brand</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-stone transition-colors">Origin</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Lookbook</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Stockists</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Work with us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 uppercase text-[12px] tracking-wider text-stone">Follow</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-stone transition-colors">Instagram</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">TikTok</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">Snapchat</a></li>
+                    <li><a href="#" class="hover:text-stone transition-colors">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-center pt-8 border-t border-rule gap-4 text-[12px] text-stone">
+            <div class="flex flex-wrap gap-4 font-bold">
+                <span class="text-ink">AMEN</span>
+                <span>Saudi Arabia</span>
+                <span>VAT no. 310000000000003</span>
+                <span>Prices include VAT</span>
+            </div>
+            <div class="flex flex-wrap gap-4">
+                <a href="#" class="hover:text-ink">Privacy</a>
+                <a href="#" class="hover:text-ink">Terms</a>
+                <a href="#" class="hover:text-ink font-bold">AR / EN</a>
+            </div>
+        </div>
+        <div class="max-w-[1280px] mx-auto mt-8 font-display font-black text-center text-ink/10 text-4xl md:text-6xl tracking-tight select-none">
+            ALL MISGUIDANCE ENDS NOW.
+        </div>
+    </footer>
+
+    <div id="cart-overlay" class="fixed inset-0 bg-ink/40 z-50 backdrop-blur-sm" onclick="toggleCart()"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-bone z-50 flex flex-col shadow-2xl">
+        <div class="p-5 border-b border-rule flex justify-between items-center bg-bone">
+            <h2 class="font-display font-bold text-[24px]">Your bag <span id="cart-header-count" class="text-stone text-[16px] font-sans font-normal ml-2">— 0 items</span></h2>
+            <button onclick="toggleCart()" class="p-2 hover:bg-sand rounded-none transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        
+        <!-- Free Shipping Progress -->
+        <div class="p-5 border-b border-rule bg-sand/50">
+            <div class="flex justify-between text-[13px] font-bold mb-2">
+                <span id="shipping-msg">SAR 300 away from free delivery</span>
+            </div>
+            <div class="h-1 bg-rule w-full overflow-hidden">
+                <div id="shipping-progress" class="h-full bg-deepgreen w-0 transition-all duration-500"></div>
+            </div>
+        </div>
+
+        <div id="cart-items" class="flex-grow overflow-y-auto p-5 space-y-6">
+            <!-- Empty state default -->
+            <div id="empty-cart-state" class="text-center py-12">
+                <p class="font-bold mb-2">Nothing in the bag yet</p>
+                <p class="text-stone text-[13px] mb-6">The current drop is limited, and sizes go first.</p>
+                <div class="flex gap-4 justify-center">
+                    <button class="bg-ink text-bone px-6 py-2 text-[13px] font-bold hover:bg-stone transition-colors" onclick="routeTo('home'); toggleCart();">Shop new arrivals</button>
+                </div>
+            </div>
+            <!-- Cart items will be injected here via JS -->
+        </div>
+
+        <!-- Cross-sell (Hardcoded Crew Socks) -->
+        <div id="cart-cross-sell" class="p-5 border-t border-rule hidden bg-sand">
+            <p class="text-[13px] font-bold mb-3">Add Crew Socks for SAR 59 and finish the fit.</p>
+            <div class="flex gap-4 items-center">
+                <img src="https://placehold.co/100x125/E7E2D8/000000?text=Socks" class="w-16 h-20 object-cover bg-rule" alt="Crew Socks">
+                <div class="flex-grow">
+                    <p class="font-bold text-[13px]">Crew Socks 2-pack</p>
+                    <p class="text-stone text-[12px] mb-2">Bone · One Size</p>
+                    <button class="text-[12px] font-bold underline decoration-1 underline-offset-2 hover:text-stone" onclick="addToCart('Crew Socks 2-pack', 'Bone', 'One Size', 59)">Add to bag</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Subtotal -->
+        <div class="p-5 border-t border-rule bg-bone">
+            <div class="flex justify-between items-center mb-1">
+                <span class="font-bold">Subtotal</span>
+                <span class="font-bold" id="cart-subtotal">SAR 0</span>
+            </div>
+            <p class="text-stone text-[12px] mb-4">VAT included · Shipping calculated at checkout</p>
+            <button id="checkout-btn" class="w-full bg-ink text-bone py-4 font-bold text-[14px] hover:bg-deepgreen transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-4" disabled>Checkout</button>
+            <div class="flex justify-center gap-2 text-stone opacity-70">
+                <!-- Payment marks mock -->
+                <div class="px-2 py-1 border border-rule text-[10px] font-bold tracking-wider">MADA</div>
+                <div class="px-2 py-1 border border-rule text-[10px] font-bold tracking-wider">APPLE PAY</div>
+                <div class="px-2 py-1 border border-rule text-[10px] font-bold tracking-wider">TABBY</div>
+                <div class="px-2 py-1 border border-rule text-[10px] font-bold tracking-wider">COD</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // -- STATE --
+        let currentView = 'home';
+        let cart = [];
+        const FREE_SHIPPING_THRESHOLD = 300;
+
+        // -- ROUTING & SCROLL --
+        function routeTo(viewId) {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-pdp').classList.add('hidden');
+            
+            document.getElementById(`view-${viewId}`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            currentView = viewId;
+        }
+
+        // Announcement Bar Rotation
+        const announcements = [
+            "Free delivery on orders over SAR 300",
+            "Cash on delivery available across the Kingdom",
+            "14-day returns, no questions"
+        ];
+        let annIndex = 0;
+        setInterval(() => {
+            const el = document.getElementById('announcement-text');
+            el.style.opacity = 0;
+            setTimeout(() => {
+                annIndex = (annIndex + 1) % announcements.length;
+                el.innerText = announcements[annIndex];
+                el.style.opacity = 1;
+            }, 300);
+        }, 5000);
+
+        // -- CART LOGIC --
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('open');
+            
+            if(drawer.classList.contains('open')) {
+                document.body.style.overflow = 'hidden'; // prevent background scrolling
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function addToCart(name, color, size, price) {
+            const existing = cart.find(i => i.name === name && i.color === color && i.size === size);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, color, size, price, qty: 1 });
+            }
+            updateCartUI();
+            
+            // Notification feedback inside button
+            const btn = document.getElementById('add-to-bag-btn');
+            if(btn && currentView === 'pdp') {
+                const originalText = btn.innerText;
+                btn.innerText = "Added";
+                btn.classList.replace('bg-ink', 'bg-deepgreen');
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.replace('bg-deepgreen', 'bg-ink');
+                }, 1500);
+            }
+        }
+
+        function updateItemQty(index, delta) {
+            cart[index].qty += delta;
+            if(cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const emptyState = document.getElementById('empty-cart-state');
+            const crossSell = document.getElementById('cart-cross-sell');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const countEl = document.getElementById('cart-count');
+            const headerCount = document.getElementById('cart-header-count');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            // Calculate totals
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            // Update counts
+            if (totalItems > 0) {
+                countEl.innerText = totalItems;
+                countEl.classList.remove('hidden');
+                headerCount.innerText = `— ${totalItems} item${totalItems > 1 ? 's' : ''}`;
+                emptyState.classList.add('hidden');
+                crossSell.classList.remove('hidden'); // Show cross-sell when items exist
+                checkoutBtn.disabled = false;
+            } else {
+                countEl.classList.add('hidden');
+                headerCount.innerText = `— 0 items`;
+                emptyState.classList.remove('hidden');
+                crossSell.classList.add('hidden');
+                checkoutBtn.disabled = true;
+            }
+
+            subtotalEl.innerText = `SAR ${subtotal}`;
+
+            // Update Progress Bar
+            const progBar = document.getElementById('shipping-progress');
+            const shipMsg = document.getElementById('shipping-msg');
+            const percentage = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
+            progBar.style.width = `${percentage}%`;
+            
+            if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+                shipMsg.innerText = "Free delivery unlocked.";
+                shipMsg.classList.add('text-deepgreen');
+            } else {
+                shipMsg.innerText = `SAR ${FREE_SHIPPING_THRESHOLD - subtotal} away from free delivery`;
+                shipMsg.classList.remove('text-deepgreen');
+            }
+
+            // Render Items
+            // Remove existing item elements
+            Array.from(container.children).forEach(child => {
+                if(child.id !== 'empty-cart-state') child.remove();
+            });
+
+            cart.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = "flex gap-4";
+                div.innerHTML = `
+                    <div class="w-20 h-[100px] bg-sand flex-shrink-0">
+                        <img src="https://placehold.co/200x250/E7E2D8/000000?text=Item" class="w-full h-full object-cover mix-blend-multiply" alt="${item.name}">
+                    </div>
+                    <div class="flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="font-bold text-[14px] leading-tight pr-4">${item.name}</h4>
+                                <span class="font-bold text-[14px]">SAR ${item.price}</span>
+                            </div>
+                            <p class="text-stone text-[12px]">${item.color} · ${item.size}</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center border border-rule">
+                                <button class="px-3 py-1 hover:bg-sand transition-colors" onclick="updateItemQty(${idx}, -1)">-</button>
+                                <span class="px-2 text-[13px] font-bold w-6 text-center">${item.qty}</span>
+                                <button class="px-3 py-1 hover:bg-sand transition-colors" onclick="updateItemQty(${idx}, 1)">+</button>
+                            </div>
+                            <button class="text-stone text-[12px] underline decoration-1 hover:text-ink" onclick="updateItemQty(${idx}, -${item.qty})">Remove</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // -- PDP UI INTERACTIONS --
+        function selectColor(colorName) {
+            document.getElementById('selected-color-label').innerText = colorName;
+            // Simulated image swap (would normally change src based on color)
+            const imgs = [document.getElementById('pdp-img-1'), document.getElementById('pdp-img-2')];
+            imgs.forEach(img => {
+                img.style.opacity = 0;
+                setTimeout(() => { img.style.opacity = 1; }, 200);
+            });
+        }
+
+        function selectSize(size) {
+            document.getElementById('selected-size-label').innerText = size;
+        }
+
+        function showNotify() {
+            // Simplified notification simulation
+            const btn = event.target;
+            const original = btn.innerText;
+            btn.innerText = "Notify";
+            setTimeout(() => { btn.innerText = original; }, 2000);
+        }
+
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            if(el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                event.currentTarget.querySelector('i').style.transform = 'rotate(180deg)';
+            } else {
+                el.classList.add('hidden');
+                event.currentTarget.querySelector('i').style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function showNotifyMsg() {
+            const msg = document.getElementById('newsletter-msg');
+            msg.innerText = "You're on the list. You'll hear about the next drop before anyone scrolling does.";
+            msg.classList.replace('text-bone/50', 'text-deepgreen');
+            msg.classList.add('font-bold');
+        }
+
+        // Initialize UI
+        updateCartUI();
+
+    </script>
+</body>
+</html>
